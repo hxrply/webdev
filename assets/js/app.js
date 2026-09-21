@@ -247,7 +247,9 @@
         '</div>' +
       '</article>';
 
-    // Hydrate interactive blocks.
+    // Hydrate interactive blocks. SQL blocks share one database per
+    // lesson, so drop the previous lesson's before wiring up this one.
+    if (result.blocks.some(function (b) { return b.kind === 'sql'; })) SQLPlay.discard();
     result.blocks.forEach(function (b) {
       const host = document.getElementById(b.id);
       if (!host) return;

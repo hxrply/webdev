@@ -1,9 +1,10 @@
 /* ============================================================
    sqlplay.js — a real SQL console in the browser.
    Uses sql.js (SQLite compiled to WebAssembly), loaded lazily
-   from a locally vendored copy (no network needed). Every block
-   gets its own seeded copy of the sample database, so writes in
-   one lesson can't surprise you in another.
+   from a locally vendored copy (no network needed). All blocks on a
+   lesson page share one database and auto-run in document order, so a
+   lesson reads like a real console session: create something in one
+   block, query it in the next. Moving to another lesson re-seeds.
    ============================================================ */
 window.SQLPlay = (function () {
   'use strict';
@@ -91,7 +92,9 @@ INSERT INTO order_items (id, order_id, product_id, quantity, unit_price) VALUES
  (16,1010,7,1,420.00),(17,1010,1,2,89.00);
 `;
 
-  let SQLPromise = null;
+  let SQLPromise = null;   // the wasm engine, loaded once
+  let dbPromise = null;    // the database shared by this page's blocks
+  let chain = Promise.resolve();   // keeps auto-runs in document order
 
   function loadEngine() {
     if (SQLPromise) return SQLPromise;
@@ -147,6 +150,34 @@ INSERT INTO order_items (id, order_id, product_id, quantity, unit_price) VALUES
     out.innerHTML = html;
   }
 
+  /** The page's shared database, seeded on first use. */
+  function getDb() {
+    if (!dbPromise) {
+      dbPromise = loadEngine().then(function (SQL) {
+        const db = new SQL.Database();
+        db.run(SEED);
+        return db;
+      });
+    }
+    return dbPromise;
+  }
+
+  /** Throw the current database away and build a fresh one. */
+  function reseed() {
+    const previous = dbPromise;
+    dbPromise = null;
+    if (previous) previous.then(function (db) { try { db.close(); } catch (e) {} }, function () {});
+    return getDb();
+  }
+
+  /** Called when leaving a lesson so the next one starts clean. */
+  function discard() {
+    const previous = dbPromise;
+    dbPromise = null;
+    chain = Promise.resolve();
+    if (previous) previous.then(function (db) { try { db.close(); } catch (e) {} }, function () {});
+  }
+
   function create(host, opts) {
     const original = opts.code;
     host.className = 'sqlp';
@@ -165,23 +196,12 @@ INSERT INTO order_items (id, order_id, product_id, quantity, unit_price) VALUES
     ta.value = original;
     ta.style.height = Math.min(320, Math.max(90, original.split('\n').length * 22 + 26)) + 'px';
 
-    let db = null;
-
-    function openDb() {
-      return loadEngine().then(function (SQL) {
-        if (db) db.close();
-        db = new SQL.Database();
-        db.run(SEED);
-        return db;
-      });
-    }
-
     function run(sql) {
       out.innerHTML = '<div class="sqlp-msg">Running…</div>';
       const t0 = Date.now();
-      (db ? Promise.resolve(db) : openDb()).then(function (d) {
+      return getDb().then(function (db) {
         try {
-          renderResults(out, d.exec(sql), d, t0);
+          renderResults(out, db.exec(sql), db, t0);
         } catch (err) {
           out.innerHTML = '<div class="sqlp-msg err">✕ ' + MD.esc(err.message) + '</div>';
         }
@@ -196,9 +216,11 @@ INSERT INTO order_items (id, order_id, product_id, quantity, unit_price) VALUES
     host.querySelector('[data-run]').addEventListener('click', function () { run(ta.value); });
     host.querySelector('[data-reset]').addEventListener('click', function () {
       ta.value = original;
-      openDb().then(function () {
-        out.innerHTML = '<div class="sqlp-msg ok">✔ Database reset to its original state.</div>';
-      }).catch(function () {});
+      out.innerHTML = '<div class="sqlp-msg">Re-seeding…</div>';
+      reseed().then(function () {
+        out.innerHTML = '<div class="sqlp-msg ok">✔ Database reset to its original state. ' +
+          'Other blocks on this page share it, so re-run them if you need their results back.</div>';
+      });
     });
     host.querySelector('[data-schema]').addEventListener('click', function () {
       run("SELECT name AS table_name, sql AS definition FROM sqlite_master WHERE type='table' ORDER BY name;");
@@ -213,8 +235,9 @@ INSERT INTO order_items (id, order_id, product_id, quantity, unit_price) VALUES
       }
     });
 
-    if (opts.auto !== false) run(original);
+    // Queue the first run so blocks execute top to bottom, not all at once.
+    if (opts.auto !== false) chain = chain.then(function () { return run(original); });
   }
 
-  return { create: create, seed: SEED };
+  return { create: create, seed: SEED, discard: discard, reseed: reseed };
 })();
