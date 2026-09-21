@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Webcraft — Learn Web Development</title>
+<meta name="description" content="A hands-on course covering HTML, CSS, JavaScript, SQL, and everything else you need to build for the web.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128187;</text></svg>">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <button class="icon-btn menu-btn" id="menuBtn" aria-label="Toggle navigation" aria-expanded="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+  </button>
+
+  <a class="brand" href="#/">
+    <span class="brand-mark" aria-hidden="true">&lt;/&gt;</span>
+    <span class="brand-text">Webcraft</span>
+  </a>
+
+  <div class="search-wrap">
+    <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    <input type="search" id="search" placeholder="Search lessons&hellip;  (press /)" autocomplete="off"
+           role="combobox" aria-expanded="false" aria-controls="searchResults" aria-label="Search lessons">
+    <div class="search-results" id="searchResults" role="listbox" hidden></div>
+  </div>
+
+  <button class="icon-btn" id="themeBtn" aria-label="Toggle colour theme" title="Toggle colour theme">
+    <svg viewBox="0 0 24 24" aria-hidden="true" class="icon-moon"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+    <svg viewBox="0 0 24 24" aria-hidden="true" class="icon-sun"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.5 1.5M17.6 17.6l1.5 1.5M19.1 4.9l-1.5 1.5M6.4 17.6l-1.5 1.5"/></svg>
+  </button>
+</header>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar" aria-label="Course navigation">
+    <div class="sidebar-inner">
+      <div class="progress-card">
+        <div class="progress-card-top">
+          <span class="progress-label">Your progress</span>
+          <span class="progress-count" id="progressCount">0 / 0</span>
+        </div>
+        <div class="bar"><div class="bar-fill" id="progressBar" style="width:0%"></div></div>
+        <button class="ghost-btn" id="resetBtn" type="button">Reset progress</button>
+      </div>
+      <div id="navTree" class="nav-tree"></div>
+    </div>
+  </nav>
+  <div class="scrim" id="scrim" hidden></div>
+
+  <main id="main" class="main" tabindex="-1">
+    <div id="view" class="view"></div>
+  </main>
+</div>
+
+<script src="curriculum.js"></script>
+<script src="assets/js/markdown.js"></script>
+<script src="assets/js/playground.js"></script>
+<script src="assets/js/sqlplay.js"></script>
+<script src="assets/js/quiz.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
