@@ -122,8 +122,8 @@ In Arabic or Hebrew, `inline-start` becomes the right. Your layout mirrors corre
 
 ```html run title="aspect-ratio and object-fit"
 <div class="row">
-  <img class="cover" src="https://picsum.photos/id/1035/300/200" alt="">
-  <img class="contain" src="https://picsum.photos/id/1035/300/200" alt="">
+  <img class="cover" src="assets/img/photo.svg" alt="">
+  <img class="contain" src="assets/img/photo.svg" alt="">
 </div>
 <p style="font-family:system-ui;font-size:13px">Both are forced square. Left: <code>object-fit: cover</code> (crops). Right: <code>contain</code> (letterboxes).</p>
 

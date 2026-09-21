@@ -83,7 +83,7 @@ The fix is nearly always: `position: relative` on the parent, `position: absolut
 
 ```html run title="The relative/absolute pair"
 <div class="card">
-  <img src="https://picsum.photos/id/1062/240/120" alt="">
+  <img src="assets/img/wide.svg" alt="">
   <span class="badge">NEW</span>
 </div>
 
@@ -134,7 +134,7 @@ Escalating z-index numbers means someone is fighting a stacking context they hav
 Floats were the layout tool of 2005–2015. Today their only legitimate use is the original one: **wrapping text around an image**.
 
 ```html run title="Float, used correctly"
-<img src="https://picsum.photos/id/1024/110/80" alt="" class="float">
+<img src="assets/img/photo.svg" alt="" class="float">
 <p>Text wraps around a floated image, which is exactly what floats were invented for.
 Everything else floats were used for — columns, grids, navigation bars — is better done
 with Flexbox or Grid now.</p>

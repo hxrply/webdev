@@ -43,8 +43,8 @@ Rules of thumb: describe the destination, front-load the distinguishing words, a
 # Images
 
 ```html run title="Images and alt text"
-<img src="https://picsum.photos/id/1025/400/260"
-     alt="A pug wrapped in a blanket, looking directly at the camera"
+<img src="assets/img/photo.svg"
+     alt="Hills silhouetted against an orange sunset"
      width="400" height="260">
 ```
 
@@ -107,7 +107,7 @@ Shipping a 3000px photo to a phone wastes the user's data and your ranking. Two 
 
 ```html run title="Figure with caption"
 <figure>
-  <img src="https://picsum.photos/id/1040/400/220" alt="A house on a wooded hillside">
+  <img src="assets/img/wide.svg" alt="A small cabin among pine trees">
   <figcaption>Fig 1. The finished cabin, six months after the first post went in.</figcaption>
 </figure>
 ```

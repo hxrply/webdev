@@ -79,7 +79,12 @@ window.Playground = (function () {
       '<div class="pg-body">' +
         '<textarea class="pg-editor" spellcheck="false" aria-label="Editable code"></textarea>' +
         '<div class="pg-preview-wrap"><iframe class="pg-preview" title="Live preview" ' +
-          'sandbox="allow-scripts allow-modals allow-forms allow-popups"></iframe></div>' +
+          // allow-same-origin is needed for the localStorage and cookie lessons to
+          // run at all. Combined with allow-scripts it drops the origin barrier, so
+          // snippets can reach this page — acceptable here because every snippet is
+          // either first-party lesson content or code the learner typed themselves,
+          // exactly like using the browser console.
+          'sandbox="allow-scripts allow-same-origin allow-modals allow-forms allow-popups"></iframe></div>' +
       '</div>' +
       '<div class="pg-console" aria-live="polite" aria-label="Console output"></div>';
 

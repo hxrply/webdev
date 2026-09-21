@@ -351,6 +351,9 @@ a:hover { text-decoration: underline; }
   border: 1px solid var(--border); border-left-width: 3px;
   border-radius: var(--radius-sm); background: var(--bg-elev); font-size: 15.5px;
 }
+/* Flex items default to min-width:auto, so a wide <pre> inside a callout
+   would stretch the callout past the viewport instead of scrolling. */
+.callout-body { min-width: 0; flex: 1; }
 .callout > .callout-body > :last-child { margin-bottom: 0; }
 .callout-icon { font-size: 17px; line-height: 1.5; flex: none; }
 .callout-title { font-weight: 650; margin-bottom: 3px; }
@@ -366,6 +369,7 @@ a:hover { text-decoration: underline; }
 }
 .exercise-title { font-weight: 700; font-size: 14px; letter-spacing: .05em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
 .exercise > :last-child { margin-bottom: 0; }
+.exercise, .quiz, .view { min-width: 0; }
 
 /* ============================================================
    Playground

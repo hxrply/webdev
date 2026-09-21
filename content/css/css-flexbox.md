@@ -153,7 +153,7 @@ Three lines. This was genuinely difficult before 2015, which is why "centre a di
 
 <!-- 2. Media object -->
 <div class="media">
-  <img src="https://picsum.photos/id/1027/56/56" alt="">
+  <img src="assets/img/avatar.svg" alt="">
   <div><strong>Ada Lovelace</strong><br><span class="dim">Wrote the first algorithm.</span></div>
 </div>
 

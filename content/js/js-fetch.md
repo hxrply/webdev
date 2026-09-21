@@ -1,5 +1,12 @@
 `fetch` is how browser JavaScript talks to servers. Almost every dynamic page you've used is making these calls constantly.
 
+:::note These examples call live APIs
+Unlike the rest of the course, this lesson's runnable blocks make real network
+requests to public APIs, so they need an internet connection — and they can hit
+rate limits if you run them repeatedly. When one fails you'll see the error
+handling below doing its job, which is instructive in its own right.
+:::
+
 # A basic GET
 
 ```js run

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 220" role="img" aria-label="Illustration of a cabin among trees">
+  <rect width="400" height="220" fill="#e6f0e8"/>
+  <path d="M0 160h400v60H0z" fill="#9ae6b4"/>
+  <g fill="#276749">
+    <path d="M60 160 L85 95 L110 160z"/><path d="M110 160 L140 70 L170 160z"/>
+    <path d="M300 160 L325 100 L350 160z"/>
+  </g>
+  <path d="M195 160v-45h70v45z" fill="#a0562b"/>
+  <path d="M185 118 L230 88 L275 118z" fill="#7b341e"/>
+  <rect x="218" y="132" width="20" height="28" fill="#fefcbf"/>
+</svg>

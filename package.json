@@ -1,0 +1,12 @@
+{
+  "name": "webcraft",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A hands-on course in HTML, CSS, JavaScript and SQL. Static site, no build step.",
+  "scripts": {
+    "start": "python3 -m http.server 8000",
+    "check": "node tools/check-content.js && node tools/check-sql.js",
+    "check:content": "node tools/check-content.js",
+    "check:sql": "node tools/check-sql.js"
+  }
+}

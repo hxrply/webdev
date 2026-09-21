@@ -115,7 +115,7 @@ The order matters for links: **L**ove/**H**ate — `:link`, `:visited`, `:hover`
 <article>
   <h2>A heading</h2>
   <p>Some text.</p>
-  <figure><img src="https://picsum.photos/id/1015/200/100" alt=""><figcaption>A caption</figcaption></figure>
+  <figure><img src="assets/img/wide.svg" alt=""><figcaption>A caption</figcaption></figure>
 </article>
 <article>
   <h2>No figure here</h2>
