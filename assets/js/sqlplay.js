@@ -1,14 +1,17 @@
 /* ============================================================
    sqlplay.js — a real SQL console in the browser.
    Uses sql.js (SQLite compiled to WebAssembly), loaded lazily
-   from a CDN the first time a SQL lesson is opened. Every block
+   from a locally vendored copy (no network needed). Every block
    gets its own seeded copy of the sample database, so writes in
    one lesson can't surprise you in another.
    ============================================================ */
 window.SQLPlay = (function () {
   'use strict';
 
-  const CDN = 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/';
+  // sql.js is vendored locally (assets/vendor/sql.js, MIT) so the SQL lessons
+  // work offline and on networks that block CDNs. The CDN is a fallback only.
+  const LOCAL = 'assets/vendor/sql.js/';
+  const CDN = 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.13.0/';
 
   /* ---- the sample database every SQL lesson talks about ---- */
   const SEED = `
@@ -92,16 +95,28 @@ INSERT INTO order_items (id, order_id, product_id, quantity, unit_price) VALUES
 
   function loadEngine() {
     if (SQLPromise) return SQLPromise;
-    SQLPromise = new Promise(function (resolve, reject) {
-      if (window.initSqlJs) return resolve(window.initSqlJs({ locateFile: function (f) { return CDN + f; } }));
-      const s = document.createElement('script');
-      s.src = CDN + 'sql-wasm.js';
-      s.onload = function () {
-        window.initSqlJs({ locateFile: function (f) { return CDN + f; } }).then(resolve, reject);
-      };
-      s.onerror = function () { reject(new Error('offline')); };
-      document.head.appendChild(s);
-    });
+
+    function initFrom(base) {
+      return window.initSqlJs({ locateFile: function (f) { return base + f; } });
+    }
+
+    function loadScript(base) {
+      return new Promise(function (resolve, reject) {
+        const s = document.createElement('script');
+        s.src = base + 'sql-wasm.js';
+        s.onload = function () { resolve(base); };
+        s.onerror = function () { reject(new Error('could not load ' + s.src)); };
+        document.head.appendChild(s);
+      });
+    }
+
+    SQLPromise = (window.initSqlJs ? Promise.resolve(LOCAL) : loadScript(LOCAL))
+      .then(initFrom)
+      .catch(function () {
+        // Local copy missing or the wasm failed — try the CDN before giving up.
+        return (window.initSqlJs ? Promise.resolve(CDN) : loadScript(CDN)).then(initFrom);
+      });
+
     return SQLPromise;
   }
 
@@ -171,9 +186,10 @@ INSERT INTO order_items (id, order_id, product_id, quantity, unit_price) VALUES
           out.innerHTML = '<div class="sqlp-msg err">✕ ' + MD.esc(err.message) + '</div>';
         }
       }).catch(function () {
-        out.innerHTML = '<div class="sqlp-msg err">✕ Could not load the SQL engine.<br>' +
-          'It is fetched from a CDN the first time you open a SQL lesson, so this page needs ' +
-          'an internet connection to run queries. The lesson text and answers all still work.</div>';
+        out.innerHTML = '<div class="sqlp-msg err">✕ Could not start the SQL engine.<br>' +
+          'It loads from <code>assets/vendor/sql.js/</code>. Check that folder exists, and that ' +
+          'you are viewing this over http:// rather than file:// — browsers refuse to load ' +
+          'WebAssembly from the file system. The lesson text and answers still work.</div>';
       });
     }
 
