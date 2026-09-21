@@ -1,0 +1,66 @@
+# Publishes the site to GitHub Pages.
+#
+# The content checks run first, so a broken lesson or a failing SQL block
+# stops the deploy instead of shipping. `enablement: true` turns Pages on
+# the first time this runs, so there is nothing to click in Settings.
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - claude/web-dev-learning-site-6b9yro
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Let a running deploy finish rather than cancelling it half-published.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Check content
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate curriculum, lessons and quizzes
+        run: node tools/check-content.js
+      - name: Run every SQL block against the sample database
+        run: node tools/check-sql.js
+
+  deploy:
+    name: Deploy
+    needs: check
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assemble the site
+        # Only what the site needs at runtime — the checkers, workflow and
+        # package.json are for development and are not published.
+        run: |
+          mkdir -p _site
+          cp -r index.html curriculum.js assets content README.md _site/
+          touch _site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4

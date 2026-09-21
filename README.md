@@ -4,6 +4,8 @@ A hands-on course in web development: HTML, CSS, JavaScript, SQL, and the
 tools around them. 67 lessons across 7 tracks, with code you can edit and
 run on the page.
 
+**Live: https://hxrply.github.io/webdev/**
+
 It's a static site — no build step, no framework, no dependencies to
 install. Clone it, serve the folder, and it works.
 
@@ -18,8 +20,23 @@ npx serve
 # or: VS Code → right-click index.html → "Open with Live Server"
 ```
 
-To publish it: push to GitHub and enable Pages (Settings → Pages → branch
-`main`, folder `/`). Netlify, Vercel and Cloudflare Pages work the same way.
+## Deployment
+
+Pushing to the default branch publishes the site to GitHub Pages via
+`.github/workflows/deploy.yml`. The workflow runs both checkers first, so a
+broken lesson or a failing SQL block stops the deploy rather than shipping.
+
+It publishes only the runtime files — `index.html`, `curriculum.js`,
+`assets/` and `content/` — plus a `.nojekyll` marker so Pages serves the
+files as-is instead of running them through Jekyll.
+
+Because the site is served from a subpath (`/webdev/`), every path in the
+project is relative. Introducing a root-relative path like `/assets/style.css`
+would work locally and 404 once deployed.
+
+Netlify, Vercel and Cloudflare Pages need no configuration either — point
+them at the repo with no build command and the repository root as the
+publish directory.
 
 ## What's in it
 
