@@ -4,7 +4,8 @@ A hands-on course in web development: HTML, CSS, JavaScript, SQL, and the
 tools around them. 67 lessons across 7 tracks, with code you can edit and
 run on the page.
 
-**Live: https://hxrply.github.io/webdev/**
+**Live: https://hxrply.github.io/webdev/** (once Pages is enabled — see
+[Deployment](#deployment))
 
 It's a static site — no build step, no framework, no dependencies to
 install. Clone it, serve the folder, and it works.
@@ -21,6 +22,21 @@ npx serve
 ```
 
 ## Deployment
+
+### One-time setup
+
+GitHub Pages has to be switched on by a repository admin before anything can
+deploy to it:
+
+**Settings → Pages → Build and deployment → Source: "GitHub Actions"**
+
+The workflow asks for this automatically (`enablement: true`), but the
+Actions token is normally refused, failing with *"Create Pages site failed:
+Resource not accessible by integration"*. After the switch is flipped, re-run
+the workflow (Actions → Deploy to GitHub Pages → Run workflow) and every
+later push deploys on its own.
+
+### The workflow
 
 Pushing to the default branch publishes the site to GitHub Pages via
 `.github/workflows/deploy.yml`. The workflow runs both checkers first, so a

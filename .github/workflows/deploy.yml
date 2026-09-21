@@ -1,8 +1,14 @@
 # Publishes the site to GitHub Pages.
 #
 # The content checks run first, so a broken lesson or a failing SQL block
-# stops the deploy instead of shipping. `enablement: true` turns Pages on
-# the first time this runs, so there is nothing to click in Settings.
+# stops the deploy instead of shipping.
+#
+# ONE-TIME SETUP: Pages has to be switched on by a repository admin before
+# this can deploy — Settings -> Pages -> Build and deployment -> Source:
+# "GitHub Actions". The `enablement: true` below tries to do it
+# automatically, but the workflow token is usually refused with
+# "Create Pages site failed: Resource not accessible by integration".
+# Once Pages exists, that step is a no-op and every push deploys.
 name: Deploy to GitHub Pages
 
 on:
@@ -54,6 +60,7 @@ jobs:
           cp -r index.html curriculum.js assets content README.md _site/
           touch _site/.nojekyll
 
+      # Fails until Pages is enabled in Settings — see the note at the top.
       - uses: actions/configure-pages@v5
         with:
           enablement: true
