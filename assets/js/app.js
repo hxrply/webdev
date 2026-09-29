@@ -8,7 +8,6 @@
   const view = document.getElementById('view');
   const navTree = document.getElementById('navTree');
   const STORE_PROGRESS = 'webcraft.progress.v1';
-  const STORE_THEME = 'webcraft.theme';
   const STORE_LAST = 'webcraft.last';
 
   /* ---------- flat lesson index ---------- */
@@ -35,19 +34,6 @@
   let done = new Set(read(STORE_PROGRESS, []));
   function saveProgress() { write(STORE_PROGRESS, Array.from(done)); }
   function isDone(id) { return done.has(id); }
-
-  /* ---------- theme ---------- */
-  const themeBtn = document.getElementById('themeBtn');
-  const savedTheme = read(STORE_THEME, null);
-  if (savedTheme) document.documentElement.dataset.theme = savedTheme;
-  else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-    document.documentElement.dataset.theme = 'light';
-  }
-  themeBtn.addEventListener('click', function () {
-    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = next;
-    write(STORE_THEME, next);
-  });
 
   /* ---------- sidebar ---------- */
   const sidebar = document.getElementById('sidebar');

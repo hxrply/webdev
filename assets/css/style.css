@@ -2,6 +2,7 @@
    Webcraft — design tokens
    ============================================================ */
 :root {
+  color-scheme: dark;
   --bg:          #0d1117;
   --bg-elev:     #151b24;
   --bg-elev-2:   #1c242f;
@@ -27,28 +28,6 @@
   --topbar-h:    58px;
   --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-
-[data-theme="light"] {
-  --bg:          #ffffff;
-  --bg-elev:     #f7f9fc;
-  --bg-elev-2:   #eef2f7;
-  --border:      #d8e0ea;
-  --border-soft: #e6ecf3;
-  --text:        #14181f;
-  --text-dim:    #56616f;
-  --text-faint:  #7b8794;
-  --accent:      #0a68d8;
-  --accent-soft: rgba(10, 104, 216, .10);
-  --accent-2:    #6532e8;
-  --ok:          #1a7f37;
-  --ok-soft:     rgba(26, 127, 55, .10);
-  --warn:        #9a6700;
-  --warn-soft:   rgba(154, 103, 0, .12);
-  --danger:      #cf222e;
-  --danger-soft: rgba(207, 34, 46, .10);
-  --code-bg:     #f6f8fa;
-  --shadow:      0 8px 30px rgba(20,30,50,.10);
 }
 
 /* ============================================================
@@ -117,10 +96,6 @@ a:hover { text-decoration: underline; }
 }
 .icon-btn:hover { background: var(--bg-elev-2); color: var(--text); }
 .menu-btn { display: none; }
-
-.icon-sun { display: none; }
-[data-theme="light"] .icon-sun { display: block; }
-[data-theme="light"] .icon-moon { display: none; }
 
 /* Search */
 .search-wrap { position: relative; margin-left: auto; width: min(380px, 42vw); }
@@ -338,12 +313,6 @@ a:hover { text-decoration: underline; }
 .tok-tag { color: #7ee787; }
 .tok-atr { color: #79c0ff; }
 .tok-pun { color: var(--text-dim); }
-[data-theme="light"] .tok-str { color: #0a7d3c; }
-[data-theme="light"] .tok-num { color: #9a4700; }
-[data-theme="light"] .tok-key { color: #cf222e; }
-[data-theme="light"] .tok-fn  { color: #6532e8; }
-[data-theme="light"] .tok-tag { color: #0a7d3c; }
-[data-theme="light"] .tok-atr { color: #0a68d8; }
 
 /* Callouts */
 .callout {
